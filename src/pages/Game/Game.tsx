@@ -4,7 +4,9 @@ import Menu from "../../components/Menu/Menu"
 const Game = () => {
   return (
     <div className="bg-slate-950 min-h-screen flex flex-col items-center justify-center relative">
+        
         <Menu />
+
         <button className="mt-20 focus:outline-none active:scale-95 transition">
             <img 
                 src={cat}
