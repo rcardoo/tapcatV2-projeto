@@ -5,14 +5,15 @@ interface PackEspecialProps {
     nomePackEspecial?: string;
     idPackEspecial?: string;
     imgPackEspecial?: string;
-    princePackEspecial?: number;
+    pricePackEspecial?: number;
 }
 
-const PackEspecial = ({nomePackEspecial, idPackEspecial, imgPackEspecial}: PackEspecialProps) => {
+const PackEspecial = ({nomePackEspecial, idPackEspecial, imgPackEspecial, pricePackEspecial}: PackEspecialProps) => {
   return (
     <div className="flex flex-col items-center gap-4">
       <Link
-        to={`/summon-pack/${idPackEspecial}`}
+        to={`/gacha/especial-pack/${idPackEspecial}`}
+        state={{nome: nomePackEspecial, img: imgPackEspecial, price: pricePackEspecial}}
         className="w-[258px] h-[388px]"
       >        
         <Efeito3dCard image={imgPackEspecial} alt={nomePackEspecial}/>
