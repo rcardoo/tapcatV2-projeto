@@ -38,7 +38,7 @@ const Menu = () => {
         </Link>
 
         <Link
-          to="/summon"
+          to="/gacha"
           className="flex items-center justify-center gap-1 sm:gap-2 bg-red-400 hover:bg-red-600 transition px-2 sm:px-3 py-1 rounded-full font-medium"
         >
           <FaHeart />

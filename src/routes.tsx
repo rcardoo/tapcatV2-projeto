@@ -6,6 +6,7 @@ import App from "./App";
 import Login from "./pages/Login/Login";
 import Game from "./pages/Game/Game";
 import Perfil from "./pages/Perfil/Perfil";
+import GachaMenu from "./pages/GachaMenu/GachaMenu";
 
 const router = createBrowserRouter([
     {
@@ -23,6 +24,10 @@ const router = createBrowserRouter([
     {
         path: "/perfil",
         element: <RotaPrivada><Perfil /></RotaPrivada>
+    },
+    {
+        path: "/gacha",
+        element: <RotaPrivada><GachaMenu /></RotaPrivada>
     }
 ])
 
