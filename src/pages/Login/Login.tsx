@@ -1,31 +1,37 @@
 import { FcGoogle } from "react-icons/fc";
-
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { auth } from "../../FireBaseConfig";
-
 import { useAuth } from "../../context/UserContext";
+import type { MinimalUser } from "../../context/UserContext";
 import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const navigate = useNavigate();
-  const {setUser} = useAuth()
+  const { setUser } = useAuth();
 
   const handleLogin = async () => {
-    
     const provider = new GoogleAuthProvider();
 
     try {
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
-      setUser(user)
-      if (user) {
-        navigate("/game")
-      }
-    } catch(e) {
-      alert("Erro ao fazer login");
+
+      const minimalUser: MinimalUser = {
+        uid: user.uid,
+        displayName: user.displayName,
+        email: user.email,
+        photoURL: user.photoURL,
+      };
+
+      setUser(minimalUser);
+
+      if (user) navigate("/game");
+    } catch (error) {
+      console.error("Erro ao fazer login:", error);
+      alert("Falha ao autenticar. Tente novamente.");
       navigate("/");
     }
-  }
+  };
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-slate-950">
@@ -39,6 +45,6 @@ const Login = () => {
       </button>
     </div>
   );
-}
+};
 
-export default Login
+export default Login;

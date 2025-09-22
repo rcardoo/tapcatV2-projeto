@@ -37,18 +37,17 @@ const GachaNormal = () => {
     try {
       const ref = doc(db, "users", user.uid);
 
-      // Gasta chaves
       await updateDoc(ref, {
         "status.chaves": increment(-price),
       });
 
-      // Busca personagem
       const rangeSummon = Math.floor(Math.random() * 25000) + 1;
-      const response = await axios.get(`https://api.jikan.moe/v4/characters/${rangeSummon}/full`);
+      const response = await axios.get(
+        `https://api.jikan.moe/v4/characters/${rangeSummon}/full`
+      );
       const carta = response.data.data;
       setData(carta);
 
-      // Cria objeto da carta com anime/manga corretos, vazio se não existir
       const novaCarta = {
         id: uuidv4(),
         nome: carta.name || "Nome Desconhecido",
@@ -60,11 +59,9 @@ const GachaNormal = () => {
         favorites: carta.favorites ?? 0,
       };
 
-      // Salva no inventário do Firebase
       await updateDoc(ref, {
         inventario: arrayUnion(novaCarta),
       });
-
     } catch (e) {
       alert("Ops! Parece que roubei você. Miau!!");
       console.error(e);

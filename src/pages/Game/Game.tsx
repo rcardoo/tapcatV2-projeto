@@ -1,36 +1,34 @@
-import cat from "../../assets/cat.webp"
-import { doc, updateDoc, increment } from "firebase/firestore"
-import { db } from "../../FireBaseConfig"
-import { useAuth } from "../../context/UserContext"
-// import { useUserData } from "../../context/UserDataContext" 
+import cat from "../../assets/cat.webp";
+import { doc, updateDoc, increment } from "firebase/firestore";
+import { db } from "../../FireBaseConfig";
+import { useAuth } from "../../context/UserContext";
 
 const Game = () => {
-  const { user } = useAuth()
-  // const { userData } = useUserData()
+  const { user } = useAuth();
 
-  async function handleStatus() {
-    if (!user) return
-    const ref = doc(db, "users", user.uid)
+  const handleStatus = async () => {
+    if (!user) return;
 
-    await updateDoc(ref, {
+    const userRef = doc(db, "users", user.uid);
+
+    await updateDoc(userRef, {
       "status.clicks": increment(1),
-    })
+    });
 
-    const rangeChaves = Math.floor(Math.random() * 10) + 1
-    if (rangeChaves === 5) {
-      alert("Opa, Você encontrou uma chave")
-      await updateDoc(ref, {
+    const chance = Math.floor(Math.random() * 1000) + 1;
+    if (chance === 777) {
+      alert("Opa, você encontrou uma chave!");
+      await updateDoc(userRef, {
         "status.chaves": increment(1),
-      })
+      });
     }
-  }
+  };
 
   return (
     <div className="bg-slate-950 min-h-screen flex flex-col items-center justify-center relative">
-
       <button
-        className="mt-10 focus:outline-none active:scale-95 transition"
         onClick={handleStatus}
+        className="mt-10 focus:outline-none active:scale-95 transition"
       >
         <img
           src={cat}
@@ -39,7 +37,7 @@ const Game = () => {
         />
       </button>
     </div>
-  )
-}
+  );
+};
 
-export default Game
+export default Game;

@@ -1,11 +1,9 @@
+import { useNavigate } from "react-router-dom";
 import { auth } from "../../FireBaseConfig";
 import { signOut } from "firebase/auth";
 
 import icon from "../../assets/icon.svg";
-import Medalhas from "../../components/Medalhas/Medalhas";
-
 import { useAuth } from "../../context/UserContext";
-import { useNavigate } from "react-router-dom";
 
 const Perfil = () => {
   const { user } = useAuth();
@@ -15,8 +13,8 @@ const Perfil = () => {
     try {
       await signOut(auth);
       navigate("/");
-    } catch (error) {
-      console.error("Erro ao sair:", error);
+    } catch {
+      alert("Não foi possível sair. Tente novamente.");
     }
   };
 
@@ -47,15 +45,6 @@ const Perfil = () => {
           </div>
         </div>
       </div>
-        <div className="bg-slate-900 rounded-2xl p-6 mt-12 w-full max-w-3xl shadow-lg transition hover:shadow-2xl">
-            <h2 className="text-white text-xl font-semibold mb-6">Medalhas</h2>
-            <div className="flex flex-wrap gap-6 justify-center md:justify-start">
-                <Medalhas nomeMedalha="teste" imgMedalha={icon}/>
-                <Medalhas nomeMedalha="teste" imgMedalha={icon}/>
-                <Medalhas nomeMedalha="teste" imgMedalha={icon}/>
-            </div>
-        </div>
-
     </div>
   );
 };

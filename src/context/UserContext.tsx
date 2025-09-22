@@ -1,41 +1,34 @@
-import { createContext, useContext, useState, useEffect } from "react";
-import type { ReactNode } from "react";
-import { onAuthStateChanged, type User } from "firebase/auth";
-import { auth } from "../FireBaseConfig";
-import { createUserDocumentIfNotExists } from "../service/userService";
+import { createContext, useContext, useState, type ReactNode } from "react";
 
-interface AuthContextType {
-  user: User | null;
-  setUser: React.Dispatch<React.SetStateAction<User | null>>;
+export interface MinimalUser {
+  uid: string;
+  displayName: string | null;
+  email: string | null;
+  photoURL: string | null;
 }
 
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
+interface AuthContextType {
+  user: MinimalUser | null;
+  setUser: (user: MinimalUser | null) => void;
+}
 
-export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [user, setUser] = useState<User | null>(null);
+const AuthContext = createContext<AuthContextType>({
+  user: null,
+  setUser: () => { },
+});
 
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
-      setUser(firebaseUser);
-      if (firebaseUser) {
-        createUserDocumentIfNotExists(firebaseUser).catch((err) =>
-          console.error("Erro criando doc do usuário:", err)
-        );
-      }
-    });
+export const useAuth = () => useContext(AuthContext);
 
-    return () => unsubscribe();
-  }, []);
+interface AuthProviderProps {
+  children: ReactNode;
+}
+
+export const AuthProvider = ({ children }: AuthProviderProps) => {
+  const [user, setUser] = useState<MinimalUser | null>(null);
 
   return (
     <AuthContext.Provider value={{ user, setUser }}>
       {children}
     </AuthContext.Provider>
   );
-};
-
-export const useAuth = () => {
-  const context = useContext(AuthContext);
-  if (!context) throw new Error("");
-  return context;
 };

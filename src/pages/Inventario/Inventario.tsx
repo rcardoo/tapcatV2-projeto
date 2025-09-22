@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { doc, getDoc } from "firebase/firestore";
 
 import { useAuth } from "../../context/UserContext";
-import { useUserData } from "../../context/UserDataContext";
 import { db } from "../../FireBaseConfig";
 
 import Efeito3dCard from "../../components/Efeito3dCard/Efeito3dCard";
@@ -12,21 +11,20 @@ import { RaridadeBordaEspecial } from "../../components/RaridadeBordaEspecial/Ra
 export const RaridadeBorda = (raridade: string): string => {
   switch (raridade) {
     case "Lendária":
-      return "border-2 border-yellow-400 shadow-lg";
+      return "border-4 border-yellow-400 shadow-lg";
     case "Épica":
-      return "border-2 border-purple-500 shadow-lg";
+      return "border-4 border-purple-500 shadow-lg";
     case "Rara":
-      return "border-2 border-blue-400 shadow-lg";
+      return "border-4 border-blue-400 shadow-lg";
     case "Incomum":
-      return "border-2 border-green-400 shadow-lg";
+      return "border-4 border-green-400 shadow-lg";
     default:
-      return "border-2 border-slate-400 shadow-md";
+      return "border-4 border-slate-400 shadow-md";
   }
 };
 
 const Inventario = () => {
   const { user } = useAuth();
-  const { userData } = useUserData();
 
   const [inventario, setInventario] = useState<any[]>([]);
   const [filtroRaridade, setFiltroRaridade] = useState("");
@@ -43,7 +41,9 @@ const Inventario = () => {
     fetchInventario();
   }, [user]);
 
-  const packsUnicos = Array.from(new Set(inventario.map((carta) => carta.nomePack)));
+  const packsUnicos = Array.from(
+    new Set(inventario.map((carta) => carta.nomePack))
+  );
 
   const inventarioFiltrado = inventario.filter((carta) => {
     const matchRaridade = filtroRaridade ? carta.raridade === filtroRaridade : true;
@@ -53,10 +53,8 @@ const Inventario = () => {
 
   return (
     <div className="min-h-screen bg-slate-950 p-6 flex flex-col items-center gap-6">
-      {/* Título */}
       <h1 className="text-3xl font-bold text-white mt-20">Inventário</h1>
 
-      {/* Filtros */}
       <div className="flex flex-wrap justify-center gap-4 mt-4 w-full max-w-xl">
         <select
           value={filtroRaridade}
@@ -85,13 +83,9 @@ const Inventario = () => {
         </select>
       </div>
 
-      {/* Cartas */}
       <div className="flex flex-wrap-reverse gap-10 items-center justify-center">
         {inventarioFiltrado.map((carta) => (
-          <div
-            key={carta.id}
-            className="flex flex-col items-center justify-center gap-2 p-3"
-          >
+          <div key={carta.id} className="flex flex-col items-center justify-center gap-2 p-3">
             <Efeito3dCard
               image={carta.img}
               alt={carta.nome}

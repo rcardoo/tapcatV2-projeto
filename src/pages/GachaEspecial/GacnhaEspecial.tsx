@@ -1,18 +1,18 @@
 import { useParams, useLocation } from "react-router-dom";
 import { useState } from "react";
 import axios from "axios";
+import { v4 as uuidv4 } from "uuid";
 
 import { FaKey } from "react-icons/fa6";
 import Efeito3dCard from "../../components/Efeito3dCard/Efeito3dCard";
-
-import { useAuth } from "../../context/UserContext";
-import { useUserData } from "../../context/UserDataContext";
 import CardDescSummon from "../../components/CardDescSummon/CardDescSummon";
 import { RaridadeBordaEspecial } from "../../components/RaridadeBordaEspecial/RaridadeBordaEspecial";
 import { RaridadePorRole } from "../../components/RaridadePorRole/RaridadePorRole";
+
+import { useAuth } from "../../context/UserContext";
+import { useUserData } from "../../context/UserDataContext";
 import { doc, updateDoc, increment, arrayUnion } from "firebase/firestore";
 import { db } from "../../FireBaseConfig";
-import { v4 as uuidv4 } from "uuid";
 
 const GacnhaEspecial = () => {
   const [data, setData] = useState<any>();
@@ -34,44 +34,36 @@ const GacnhaEspecial = () => {
       return;
     }
 
-    try {
-      setLoading(true);
+    setLoading(true);
 
-      // Atualiza chaves no Firebase
+    try {
       const ref = doc(db, "users", user.uid);
+
       await updateDoc(ref, {
         "status.chaves": increment(-price),
       });
 
-      // Pega personagens do anime
       const response = await axios.get(
         `https://api.jikan.moe/v4/anime/${id}/characters`
       );
-
       const personagens = response.data.data;
 
-      // Pega personagem aleatório
       const rangeSummon = Math.floor(Math.random() * personagens.length);
       const carta = personagens[rangeSummon];
 
-      // Busca fotos do personagem
       const responseFotos = await axios.get(
         `https://api.jikan.moe/v4/characters/${carta.character.mal_id}/pictures`
       );
       const fotos = responseFotos.data.data;
 
-      let fotoFinal: string;
-      if (fotos && fotos.length > 0) {
-        const randomIndex = Math.floor(Math.random() * fotos.length);
-        fotoFinal = fotos[randomIndex].jpg.image_url;
-      } else {
-        fotoFinal = carta.character.images.jpg.image_url;
-      }
+      const fotoFinal =
+        fotos && fotos.length > 0
+          ? fotos[Math.floor(Math.random() * fotos.length)].jpg.image_url
+          : carta.character.images.jpg.image_url;
 
       setData(carta);
       setDataFoto(fotoFinal);
 
-      // Cria objeto da nova carta para salvar no inventário
       const novaCarta = {
         id: uuidv4(),
         nome: carta.character?.name || "Nome Desconhecido",
@@ -82,11 +74,9 @@ const GacnhaEspecial = () => {
         role: carta.role,
       };
 
-      // Salva a carta no inventário do Firebase
       await updateDoc(ref, {
         inventario: arrayUnion(novaCarta),
       });
-
     } catch (e) {
       console.error(e);
       alert("Ops, você foi roubado!");
@@ -99,7 +89,7 @@ const GacnhaEspecial = () => {
     <div className="flex flex-col items-center justify-center min-h-screen bg-slate-950 p-6 gap-8">
       <div className="flex flex-col gap-6 items-center justify-center mt-20">
         <h2 className="text-white font-bold text-2xl text-center">
-          {`${nome}` || `Pack #${id}`}
+          {nome || `Pack #${id}`}
         </h2>
 
         <p className="flex items-center gap-2 bg-amber-400/20 text-amber-50 font-semibold px-3 py-1 rounded-full shadow-sm">
@@ -108,7 +98,7 @@ const GacnhaEspecial = () => {
         </p>
 
         <Efeito3dCard
-          image={dataFoto ? dataFoto : img}
+          image={dataFoto || img}
           alt={nome}
           borderClass={data ? RaridadeBordaEspecial(data.role) : ""}
         />
