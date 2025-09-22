@@ -1,13 +1,32 @@
 import { FcGoogle } from "react-icons/fc";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
-import { auth } from "../../FireBaseConfig";
+import { auth, db } from "../../FireBaseConfig";
 import { useAuth } from "../../context/UserContext";
 import type { MinimalUser } from "../../context/UserContext";
 import { useNavigate } from "react-router-dom";
+import { doc, getDoc, setDoc } from "firebase/firestore";
 
 const Login = () => {
   const navigate = useNavigate();
   const { setUser } = useAuth();
+
+  const initializeUserData = async (user: MinimalUser) => {
+    const ref = doc(db, "users", user.uid);
+    const docSnap = await getDoc(ref);
+
+    if (!docSnap.exists()) {
+      await setDoc(ref, {
+        email: user.email || null,
+        status: {
+          clicks: 0,
+          chaves: 0,
+        },
+        inventario: [],
+        cartas: [],
+        conquistas: [],
+      });
+    }
+  };
 
   const handleLogin = async () => {
     const provider = new GoogleAuthProvider();
@@ -24,6 +43,7 @@ const Login = () => {
       };
 
       setUser(minimalUser);
+      await initializeUserData(minimalUser);
 
       if (user) navigate("/game");
     } catch (error) {
