@@ -25,7 +25,6 @@ const Login = () => {
       alert("Erro ao fazer login");
       navigate("/");
     }
-    // console.log(user)
   }
 
   return (

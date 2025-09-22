@@ -7,11 +7,14 @@ import { RouterProvider } from "react-router-dom";
 import router from "./routes.tsx";
 
 import { AuthProvider } from "../src/context/UserContext.tsx";
+import { UserDataProvider } from "../src/context/UserDataContext.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <AuthProvider>
-      <RouterProvider router={router} />
+      <UserDataProvider>
+        <RouterProvider router={router} />
+      </UserDataProvider>
     </AuthProvider>
   </StrictMode>
 );

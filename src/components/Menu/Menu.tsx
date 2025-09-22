@@ -7,7 +7,12 @@ import { PiCat, PiTreasureChestBold } from "react-icons/pi";
 // Router
 import { Link } from "react-router-dom";
 
+// Context
+import { useUserData } from "../../context/UserDataContext";
+
 const Menu = () => {
+  const { userData } = useUserData(); // pega os dados do usuário em tempo real
+
   return (
     <div className="fixed top-4 left-1/2 -translate-x-1/2 bg-slate-900/90 backdrop-blur-md text-white px-4 sm:px-6 py-2 rounded-full shadow-lg flex items-center gap-4 sm:gap-6 text-xs sm:text-sm z-50">
       
@@ -15,13 +20,13 @@ const Menu = () => {
       <div className="flex items-center gap-1 sm:gap-2">
         <GiClick className="text-blue-400" />
         <span className="hidden sm:inline font-semibold">Cliques:</span>
-        <span>10</span>
+        <span>{userData?.status.clicks ?? "Buscando"}</span>
       </div>
 
       <div className="flex items-center gap-1 sm:gap-2">
         <FaKey className="text-yellow-400" />
         <span className="hidden sm:inline font-semibold">Chaves:</span>
-        <span>10</span>
+        <span>{userData?.status.chaves ?? "Buscando"}</span>
       </div>      
 
       {/* Divider */}
@@ -66,5 +71,3 @@ const Menu = () => {
 };
 
 export default Menu;
-
-  

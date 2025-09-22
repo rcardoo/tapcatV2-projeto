@@ -6,20 +6,19 @@ interface Card3DProps {
   width?: string;
   height?: string;
   className?: string;
+  borderClass?: string;
   onLoad?: () => void;
 }
 
-const Efeito3dCard = ({ image, alt, width = "258px", height = "388px", className = "", onLoad }: Card3DProps) => {
+const Efeito3dCard = ({ image, alt, width = "258px", height = "388px", className = "", borderClass = "", onLoad }: Card3DProps) => {
   const [transform, setTransform] = useState("");
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const { left, top, width, height } = e.currentTarget.getBoundingClientRect();
     const x = e.clientX - left;
     const y = e.clientY - top;
-
     const rotateX = ((y / height) - 0.5) * -20;
     const rotateY = ((x / width) - 0.5) * 20;
-
     setTransform(`perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.05,1.05,1.05)`);
   };
 
@@ -30,7 +29,7 @@ const Efeito3dCard = ({ image, alt, width = "258px", height = "388px", className
   return (
     <div style={{ width, height, perspective: "1000px" }}>
       <div
-        className={`w-full h-full overflow-hidden rounded-xl transition-transform duration-200 ease-out cursor-pointer ${className}`}
+        className={`w-full h-full overflow-hidden rounded-xl transition-transform duration-200 ease-out cursor-pointer ${className} ${borderClass}`}
         style={{ transform }}
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}

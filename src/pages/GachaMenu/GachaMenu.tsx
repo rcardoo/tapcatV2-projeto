@@ -13,9 +13,9 @@ const GachaMenu = () => {
           Packs
         </h2>
         <div className="flex flex-wrap justify-center gap-6 sm:gap-8 md:gap-10 py-4 px-2">
-          <PackEspecial idPackEspecial="1" imgPackEspecial={packOneOnepiece} nomePackEspecial="Pack Limitado: One Piece" pricePackEspecial={5}/>
-          <PackEspecial idPackEspecial="1" imgPackEspecial={packOnepunch} nomePackEspecial="Pack Limitado: One Punch Man" pricePackEspecial={5}/>
-          <PackNormal imgPackNormal={backcard} nomePackNormal="Teste" pricePackNormal={2}/>
+          <PackEspecial idPackEspecial={21} imgPackEspecial={packOneOnepiece} nomePackEspecial="One Piece" pricePackEspecial={5} packEspecialNomeAnime="One Piece"/>
+          <PackEspecial idPackEspecial={30276} imgPackEspecial={packOnepunch} nomePackEspecial="One Punch Man" pricePackEspecial={5} packEspecialNomeAnime="One Punch Man"/>
+          <PackNormal imgPackNormal={backcard} nomePackNormal="Pack Padrão" pricePackNormal={2}/>
         </div>
       </div>
     </div>

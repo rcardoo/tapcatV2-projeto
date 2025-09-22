@@ -9,6 +9,7 @@ import Perfil from "./pages/Perfil/Perfil";
 import GachaMenu from "./pages/GachaMenu/GachaMenu";
 import GacnhaEspecial from "./pages/GachaEspecial/GacnhaEspecial";
 import GachaNormal from "./pages/GachaNormal/GachaNormal";
+import Inventario from "./pages/Inventario/Inventario";
 
 const router = createBrowserRouter([
     {
@@ -38,6 +39,10 @@ const router = createBrowserRouter([
     {
         path: "/gacha/normal-pack",
         element: <RotaPrivada><GachaNormal/></RotaPrivada>
+    }, 
+    {
+        path: "/inventario",
+        element: <RotaPrivada><Inventario/></RotaPrivada>
     }
 ])
 
