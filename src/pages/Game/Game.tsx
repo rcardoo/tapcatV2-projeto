@@ -15,8 +15,8 @@ const Game = () => {
       "status.clicks": increment(1),
     });
 
-    const chance = Math.floor(Math.random() * 1000) + 1;
-    if (chance === 777) {
+    const chance = Math.floor(Math.random() * 200) + 1;
+    if (chance === 10) {
       alert("Opa, você encontrou uma chave!");
       await updateDoc(userRef, {
         "status.chaves": increment(1),
